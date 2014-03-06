@@ -1,3 +1,9 @@
+.project
+.classpath
+.cache
+.settings
+bin/
+
 *.class
 *.log
 
