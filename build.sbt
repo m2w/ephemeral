@@ -24,7 +24,8 @@ libraryDependencies ++= {
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
     "com.typesafe.slick"  %% "slick"          % "2.0.0",
     "org.slf4j"           % "slf4j-nop"       % "1.6.4",
-    "org.specs2"          %%  "specs2"        % "2.2.3" % "test"
+    "org.specs2"          %%  "specs2"        % "2.2.3" % "test",
+    "com.h2database"      % "h2"              % "1.3.166"
   )
 }
 
