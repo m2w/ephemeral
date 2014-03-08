@@ -12,19 +12,37 @@ class EphemeralActor extends Actor with EphemeralService with DB {
 }
 
 trait EphemeralService extends HttpService { this: DB =>
+  def respond(n: Note) = respondWithMediaType(`application/json`) {
+    complete(s"{'note': '${n.id}', 'contents': '${n.content}'}")
+  }
+  val notFound = respondWithMediaType(`application/json`) {
+    respondWithStatus(404) {
+    	complete("{'status': 404, 'message': 'No note not found'}")
+    	}
+      }
+  val gone = respondWithMediaType(`application/json`) {
+    respondWithStatus(410) {
+    	complete("{'status': 410, 'message': 'Note no longer available'}")
+    	}
+      }
   val index : Route = complete("index")
   val notes : Route = 
-    path(JavaUUID) {id => // TODO: add catch all to throw 404 instead of 405 
+    path(JavaUUID) {id =>
 		get {
-			val n = m.getNote(id)
-			// TODO: throw exception if n is None
-			complete(s"get note $n")
+			m.getNote(id) match {
+			  case Some(n @ Note(_,_,None)) => respond(n)
+			  case Some(_) => gone
+			  case None => notFound
+			}
 		}
     }~
-    post {
+    get {
+      notFound
+    }~
+    (post) {
 		entity(as[String]) { content =>
 			val n : Note = m.addNote(content)
-			complete(s"note created with id $n.id")
+			respond(n)
 		}
     }
   val routes = path("") {index}~pathPrefix("notes") {notes}

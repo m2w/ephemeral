@@ -16,14 +16,25 @@ class Model(name: String, dal: DAL, db: Database) {
   def purgeDB = dal.purge
 
   def addNote(content: String): Note = {
+    // TODO add logic to ensure that each message only exists for 1 request
     val note = Note(java.util.UUID.randomUUID(), content)
     val result = notes.insert(note)
     note
   }
   
   def getNote(id: java.util.UUID): Option[Note] = {
-    // TODO add logic to ensure that each message only exists for 1 request
-    notes.filter(_.id === id).firstOption
+    val m = notes.filter(_.id === id)
+    val n = m.firstOption
+    n match {
+      case nn @ Some(n @ Note(_,_,None)) => {
+        m.map(_.purged).update(Some(true))
+        nn
+        }
+      case n @ Some(_) => {
+        n
+      }
+      case None => None
+    }
   }
 }
 
