@@ -16,7 +16,6 @@ class Model(name: String, dal: DAL, db: Database) {
   def purgeDB = dal.purge
 
   def addNote(content: String): Note = {
-    // TODO add logic to ensure that each message only exists for 1 request
     val note = Note(java.util.UUID.randomUUID(), content)
     val result = notes.insert(note)
     note

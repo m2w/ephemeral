@@ -4,15 +4,33 @@
 <title>ephemeral.scala</title>
 <link rel="stylesheet" href="/static/css/bootstrap.min.css">
 <link rel="stylesheet" href="/static/css/ephemeral.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 </head>
 <body>
 <div id="container">
 <h1>Welcome to the <em>ephemeral.scala</em> Demo</h1>
 <p><em>ephemeral.scala</em> is a simple service to share self-destructing messages!</p>
 <form action="/notes/" method="POST" class="form-horizontal" id="form">
-<textarea class="form-control" rows="3" placeholder="Enter your message"></textarea>
+<textarea class="form-control" rows="3" placeholder="Enter your message" id="message"></textarea>
 <button type="submit" class="btn btn-primary">Create!</button>
 </form>
 </div>
+<script type="text/javascript">
+$('#form').submit(function(e){
+	e.preventDefault();
+	$.ajax({
+		type: 'POST',
+		url: '/notes/',
+		data: {'message': $('#message').val()},
+		contentType: 'application/json; charset=UTF-8',
+		dataType: 'json',
+		success: function(a, b, c) {
+			alert('ok!');
+		}
+	}).fail(function(a,b,c){
+		console.log(a);
+	});
+});
+</script>
 </body>
 </html>
