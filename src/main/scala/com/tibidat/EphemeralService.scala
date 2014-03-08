@@ -25,7 +25,9 @@ trait EphemeralService extends HttpService { this: DB =>
     	complete("{'status': 410, 'message': 'Note no longer available'}")
     	}
       }
-  val index : Route = complete("index")
+  val index : Route = compressResponse() {
+    getFromResource("index.html")
+  }
   val notes : Route = 
     path(JavaUUID) {id =>
 		get {
@@ -41,9 +43,13 @@ trait EphemeralService extends HttpService { this: DB =>
     }~
     (post) {
 		entity(as[String]) { content =>
-			val n : Note = m.addNote(content)
-			respond(n)
+			respond(m.addNote(content))
 		}
     }
-  val routes = path("") {index}~pathPrefix("notes") {notes}
+  val static : Route = pathPrefix("css") {
+    compressResponse() {
+    	getFromResourceDirectory("static/css")
+    }
+  }
+  val routes = path("") {index}~pathPrefix("notes") {notes}~pathPrefix("static") {static}
 }
