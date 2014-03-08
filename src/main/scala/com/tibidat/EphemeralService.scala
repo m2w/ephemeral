@@ -13,16 +13,16 @@ class EphemeralActor extends Actor with EphemeralService with DB {
 
 trait EphemeralService extends HttpService { this: DB =>
   def respond(n: Note) = respondWithMediaType(`application/json`) {
-    complete(s"{'note': '${n.id}', 'contents': '${n.content}'}")
+    complete("{\"note\": \""+ n.id + "\", \"contents\": \""+ n.content +"\"}")
   }
   val notFound = respondWithMediaType(`application/json`) {
     respondWithStatus(404) {
-    	complete("{'status': 404, 'message': 'No note not found'}")
+    	complete("{\"status\": 404, \"message\": \"No note not found\"}")
     	}
       }
   val gone = respondWithMediaType(`application/json`) {
     respondWithStatus(410) {
-    	complete("{'status': 410, 'message': 'Note no longer available'}")
+    	complete("{\"status\": 410, \"message\": \"Note no longer available\"}")
     	}
       }
   val index : Route = compressResponse() {
