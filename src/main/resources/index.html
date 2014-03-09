@@ -10,6 +10,12 @@
 <div id="container">
 <h1>Welcome to the <em>ephemeral.scala</em> Demo</h1>
 <p><em>ephemeral.scala</em> is a simple service to share self-destructing messages!</p>
+
+<div class="alert alert-dismissable alert-success" id="success-alert">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  Your one-time note is available at <code>note-id</code>.
+</div>
+
 <form action="/notes/" method="POST" class="form-horizontal" id="form">
 <textarea class="form-control" rows="3" placeholder="Enter your message" id="message"></textarea>
 <button type="submit" class="btn btn-primary">Create!</button>
@@ -24,12 +30,15 @@ $('#form').submit(function(e){
 		data: {'message': $('#message').val()},
 		contentType: 'application/json; charset=UTF-8',
 		dataType: 'json',
-		success: function(a, b, c) {
-			alert('ok!');
+		success: function(response) {
+			console.log(response);
+			$('#success-alert code').text(window.location + 'notes/' + response.note)
+			$('#success-alert').show();
 		}
-	}).fail(function(a,b,c){
-		console.log(a);
 	});
+});
+$('#message').on('keyup change', function() {
+    $('.alert').fadeOut('slow');
 });
 </script>
 </body>

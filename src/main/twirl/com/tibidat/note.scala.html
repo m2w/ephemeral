@@ -1,0 +1,21 @@
+@(contents: String, id: String)
+<html>
+<head>
+<title>ephemeral.scala</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/ephemeral.css">
+</head>
+<body>
+<div id="container">
+<h3>Note: @id</h3>
+<div class="panel panel-default">
+  <div class="panel-body">
+    @contents
+  </div>
+</div>
+<div class="well well-sm">
+  This note will self-destruct after reading...
+</div>
+</div>
+</body>
+</html>

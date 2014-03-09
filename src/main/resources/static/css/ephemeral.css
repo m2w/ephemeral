@@ -4,3 +4,6 @@ div#container {
 	padding: 2rem;
 	width: 60%;
 }
+div.alert {
+	display: none;
+}

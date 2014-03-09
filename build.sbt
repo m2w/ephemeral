@@ -12,6 +12,8 @@ resolvers ++= Seq(
   "spray repo" at "http://repo.spray.io/"
 )
 
+resolvers += Classpaths.sbtPluginSnapshots
+
 libraryDependencies ++= {
   val akkaV = "2.1.4"
   val sprayV = "1.1.0"
@@ -30,3 +32,5 @@ libraryDependencies ++= {
 }
 
 seq(Revolver.settings: _*)
+
+seq(Twirl.settings: _*)

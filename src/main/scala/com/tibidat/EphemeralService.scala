@@ -15,6 +15,11 @@ trait EphemeralService extends HttpService { this: DB =>
   def respond(n: Note) = respondWithMediaType(`application/json`) {
     complete("{\"note\": \""+ n.id + "\", \"contents\": \""+ n.content +"\"}")
   }
+
+  def respondWithTemplate(n: Note) = respondWithMediaType(`text/html`) {
+    complete(com.tibidat.html.note(n.content, n.id.toString()).toString())
+  }
+
   val notFound = respondWithMediaType(`application/json`) {
     respondWithStatus(404) {
     	complete("{\"status\": 404, \"message\": \"No note not found\"}")
@@ -32,7 +37,7 @@ trait EphemeralService extends HttpService { this: DB =>
     path(JavaUUID) {id =>
 		get {
 			m.getNote(id) match {
-			  case Some(n @ Note(_,_,None)) => respond(n)
+			  case Some(n @ Note(_,_,None)) => respondWithTemplate(n)
 			  case Some(_) => gone
 			  case None => notFound
 			}
